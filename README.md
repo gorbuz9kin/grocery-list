@@ -31,7 +31,7 @@ npm run android
 npm run ios
 ```
 
-## Tech Requirements:
+## Requirements:
 
 ### User stories:
 
