@@ -1,79 +1,81 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Start the project
 
-# Getting Started
+## Step 1: Setup dependencies
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Project uses a package manager Npm
 
-## Step 1: Start the Metro Server
+- Clone the repo
+- Run next commands
+  1.  `npm i` - install common dependencies and packages
+  2.  `cd ios/`
+  3.  `npm run pod-install` - install IOS pods
+  4.  `cd ..`
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
+## Step 2: Start the Metro Server
 
 ```bash
-# using npm
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Step 3: Start your Application
 
 ### For Android
 
 ```bash
-# using npm
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
 ### For iOS
 
 ```bash
-# using npm
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Tech Requirements:
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+https://gist.github.com/syzspectroom/8cf672c89c673fcc4f3af4e19139fd6f
 
-## Step 3: Modifying your App
+## Project structure:
 
-Now that you have successfully run the app, let's modify it.
+- ./src/api/ - core api request class;
+- ./src/app/ - main entry point for the application;
+- ./src/components/ - UI components, reusable parts;
+- ./src/configs/ - configs for colors, fonts, images, constants;
+- ./src/containers/ - pages wrapper and main layout container for each page;
+- ./src/navigation/ - list of custom routes, navigation config trough the application;
+- ./src/store/ - configs for redux stores;
+- ./src/utils/ - helper functions for application, reusable functions;
+- ./src/types/ - types of the components
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## Styles rules:
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+It is not allowed to use inline styles for containers, all styles must be in separate files.
+For components: if styles less then height of your screen it allowed to insert them to the same file.
 
-## Congratulations! :tada:
+## Import rules:
 
-You've successfully run and modified your React Native App. :partying_face:
+1. React, React Native modules
+2. Third-party libraries
+3. Custom modules (reducers, stores, components, helpers)
+4. Constants/configs
+5. Styles
+6. Types
 
-### Now what?
+## GIT Flow:
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+1. Each feature must be implemented in separate branch.
+2. When you create PullRequest target branch is 'dev'.
+3. When you implemented a part of the feature you should create a pull request (PR) with comment "in progress" and send a link
+   on that PR to another developer.
+4. When you completed implementing some feature you should change status/comment of your PR from 'in progress' to 'completed'
+   and update another developer about it.
 
-# Troubleshooting
+## Naming convention:
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1. Features/containers/components/store folders - PascalCase
+2. General folders - camelCase
+3. Files - camelCase
+4. Constants - camelCase
+5. Function - camelCase
+6. Props - camelCase
+   Tutorial: https://github.com/airbnb/javascript/tree/master/react
