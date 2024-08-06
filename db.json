@@ -1,0 +1,32 @@
+{
+  "list": [
+    {
+      "id": "1",
+      "name": "Bread",
+      "quantity": "1",
+      "unit": "It",
+      "isCompleted": true
+    },
+    {
+      "id": "2",
+      "name": "Eggs",
+      "quantity": "30",
+      "unit": "12",
+      "isCompleted": true
+    },
+    {
+      "id": "3",
+      "name": "Potato",
+      "quantity": "22",
+      "unit": "Kg",
+      "isCompleted": false
+    },
+    {
+      "id": "4",
+      "name": "Tomato",
+      "quantity": "3",
+      "unit": "Bins",
+      "isCompleted": false
+    }
+  ]
+}

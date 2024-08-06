@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  textError: {
+    marginBottom: 16,
+    color: Colors.red,
+  },
   content: {
     flex: 1,
   },

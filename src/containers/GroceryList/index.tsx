@@ -17,55 +17,31 @@ import {
   Popup,
   Card,
 } from 'components';
+import {
+  useFetchShoppingList,
+  useCreateListItem,
+  useUpdateListItem,
+  useDeleteListItem,
+} from 'api';
 import { ItemType } from 'types';
 import styles from './styles';
 
-const dummyData: ItemType[] = [
-  {
-    id: 1,
-    name: 'Eggs',
-    quantity: '20',
-    unit: '',
-    isCompleted: true,
-  },
-  {
-    id: 2,
-    name: 'Butter',
-    quantity: '1',
-    unit: 'gr',
-    isCompleted: false,
-  },
-  {
-    id: 3,
-    name: 'Bread',
-    quantity: '2',
-    unit: '',
-    isCompleted: false,
-  },
-  {
-    id: 4,
-    name: 'Milk',
-    quantity: '2',
-    unit: 'l',
-    isCompleted: false,
-  },
-];
-
 const GroceryList = (): React.JSX.Element => {
+  const { data, isError } = useFetchShoppingList();
   const [activeItem, setActiveItem] =
     useState<ItemType | null>(null);
-  const [itemsList, setItemsList] =
-    useState<ItemType[]>(dummyData);
   const [isVisiblePopup, setVisiblePopup] =
     useState<boolean>(false);
   const completedItemsCount = useMemo(
     () =>
-      itemsList
-        ? itemsList?.filter((item) => item?.isCompleted)
-            .length
+      data
+        ? data?.filter((item) => item?.isCompleted).length
         : 0,
-    [itemsList],
+    [data],
   );
+  const createListItem = useCreateListItem();
+  const updateListItem = useUpdateListItem();
+  const deleteListItem = useDeleteListItem();
 
   const onAddItem = useCallback(() => {
     setActiveItem(null);
@@ -77,50 +53,41 @@ const GroceryList = (): React.JSX.Element => {
   }, []);
 
   const onUpdateItem = useCallback(
-    (value: ItemType) => {
-      const items = [...itemsList];
-      const idx = items.findIndex(
-        (el) => el.id === value.id,
-      );
-      if (idx > -1) {
-        items[idx] = value;
-        setItemsList(items);
-      }
+    async (value: ItemType | Partial<ItemType>) => {
+      await updateListItem.mutateAsync({ item: value });
     },
-    [itemsList],
+    [updateListItem],
   );
 
   const onSaveItem = useCallback(
-    (value: ItemType | Partial<ItemType>) => {
+    async (value: ItemType | Partial<ItemType>) => {
       if (value.id) {
-        onUpdateItem(value as ItemType);
+        onUpdateItem(value);
       } else {
+        const id = data ? data?.length + 1 : 1;
         const newItem = {
-          id: itemsList?.length + 1,
+          id: `${id}`,
           name: value?.name ?? '',
           quantity: value?.quantity ?? '',
           unit: value?.unit ?? '',
           isCompleted: false,
         };
-        setItemsList((prev) => [...prev, newItem]);
+        await createListItem.mutateAsync({ item: newItem });
       }
       onClosePopup();
     },
-    [onClosePopup, itemsList, onUpdateItem],
+    [onClosePopup, onUpdateItem, data, createListItem],
   );
 
   const onComplete = useCallback(
     (value: ItemType | Partial<ItemType>) => {
-      const items = [...itemsList];
-      const idx = items.findIndex(
-        (el) => el.id === value.id,
-      );
-      if (idx > -1) {
-        items[idx].isCompleted = !items[idx].isCompleted;
-        setItemsList(items);
-      }
+      const newItem = {
+        ...value,
+        isCompleted: !value.isCompleted,
+      };
+      onUpdateItem(newItem);
     },
-    [itemsList],
+    [onUpdateItem],
   );
 
   const onEdit = useCallback((value: ItemType) => {
@@ -129,12 +96,12 @@ const GroceryList = (): React.JSX.Element => {
   }, []);
 
   const onDelete = useCallback(
-    (value: ItemType | Partial<ItemType>) => {
-      setItemsList((prev) =>
-        prev.filter((item) => item.id !== value.id),
-      );
+    async (value: ItemType | Partial<ItemType>) => {
+      await deleteListItem.mutateAsync({
+        item: value as ItemType,
+      });
     },
-    [],
+    [deleteListItem],
   );
 
   const getRenderItem = useCallback(
@@ -168,14 +135,20 @@ const GroceryList = (): React.JSX.Element => {
             <SvgIcon.List />
             <Text style={styles.text}>
               {`List ${completedItemsCount}/${
-                itemsList?.length ?? 0
+                data?.length ?? 0
               } Completed`}
             </Text>
           </View>
           <View style={styles.content}>
-            {itemsList?.length > 0 ? (
+            {isError && (
+              <Text style={[styles.text, styles.textError]}>
+                Something wrong. Please check your
+                connection!
+              </Text>
+            )}
+            {data && data?.length > 0 ? (
               <FlatList
-                data={itemsList}
+                data={data}
                 renderItem={getRenderItem}
                 keyExtractor={getKey}
               />

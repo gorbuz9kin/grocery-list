@@ -31,6 +31,12 @@ npm run android
 npm run ios
 ```
 
+### Run local server to mock an API integration
+
+```bash
+npm run server-start
+```
+
 ## Requirements:
 
 ### User stories:

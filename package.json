@@ -11,12 +11,16 @@
     "eslint": "eslint src/** --ext .js,.ts,.tsx",
     "ts-check": "tsc -p tsconfig.json --noEmit",
     "husky-pre-commit": "npm run prettier && npm run eslint && npm run ts-check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "server-start": "npx json-server db.json"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.51.21",
+    "json-server": "^1.0.0-beta.1",
     "react": "18.2.0",
     "react-native": "0.74.4",
-    "react-native-svg": "^15.4.0"
+    "react-native-svg": "^15.4.0",
+    "react-native-toast-message": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
