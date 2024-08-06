@@ -8,7 +8,7 @@ Project uses a package manager Npm
 - Run next commands
   1.  `npm i` - install common dependencies and packages
   2.  `cd ios/`
-  3.  `npm run pod-install` - install IOS pods
+  3.  `pod-install` - install IOS pods
   4.  `cd ..`
 
 ## Step 2: Start the Metro Server
@@ -81,8 +81,8 @@ For components: if styles less then height of your screen it allowed to insert t
 2. Third-party libraries
 3. Custom modules (reducers, stores, components, helpers)
 4. Constants/configs
-5. Styles
-6. Types
+5. Types
+6. Styles
 
 ## GIT Flow:
 
