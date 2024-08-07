@@ -17,14 +17,28 @@
     {
       "id": "3",
       "name": "Potato",
-      "quantity": "22",
+      "quantity": "23",
       "unit": "Kg",
-      "isCompleted": false
+      "isCompleted": true
     },
     {
       "id": "4",
       "name": "Tomato",
-      "quantity": "1",
+      "quantity": "16",
+      "unit": "Kg",
+      "isCompleted": true
+    },
+    {
+      "id": "5",
+      "name": "Tomato1",
+      "quantity": "5",
+      "unit": "Kg",
+      "isCompleted": true
+    },
+    {
+      "id": "6",
+      "name": "Tomato3",
+      "quantity": "3",
       "unit": "Kg",
       "isCompleted": false
     }

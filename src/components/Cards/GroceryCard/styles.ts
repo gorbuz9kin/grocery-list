@@ -46,6 +46,15 @@ const styles = StyleSheet.create({
     borderColor: Colors.purple,
     backgroundColor: Colors.darkWhite,
   },
+  btn: {
+    marginRight: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderWidth: 1,
+    borderColor: Colors.darkGray,
+    color: Colors.darkGray,
+    borderRadius: 6,
+  },
 });
 
 export default styles;

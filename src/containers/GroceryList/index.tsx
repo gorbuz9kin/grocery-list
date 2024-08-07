@@ -27,7 +27,8 @@ import { ItemType } from 'types';
 import styles from './styles';
 
 const GroceryList = (): React.JSX.Element => {
-  const { data, isError } = useFetchShoppingList();
+  const { data, isError, isLoading, refetch } =
+    useFetchShoppingList();
   const [activeItem, setActiveItem] =
     useState<ItemType | null>(null);
   const [isVisiblePopup, setVisiblePopup] =
@@ -49,6 +50,7 @@ const GroceryList = (): React.JSX.Element => {
   }, []);
 
   const onClosePopup = useCallback(() => {
+    setActiveItem(null);
     setVisiblePopup(false);
   }, []);
 
@@ -90,6 +92,36 @@ const GroceryList = (): React.JSX.Element => {
     [onUpdateItem],
   );
 
+  const onDecrease = useCallback(
+    (value: ItemType | Partial<ItemType>) => {
+      const newQuantity =
+        Number(value.quantity) && Number(value.quantity) < 2
+          ? 0
+          : Number(value.quantity) - 1;
+      console.log(111, 'newQuantity ====> ', newQuantity);
+      const newItem = {
+        ...value,
+        quantity: `${newQuantity}`,
+      };
+      onUpdateItem(newItem);
+    },
+    [onUpdateItem],
+  );
+
+  const onIncrease = useCallback(
+    (value: ItemType | Partial<ItemType>) => {
+      const newQuantity = !value.quantity
+        ? 1
+        : Number(value.quantity) + 1;
+      const newItem = {
+        ...value,
+        quantity: `${newQuantity}`,
+      };
+      onUpdateItem(newItem);
+    },
+    [onUpdateItem],
+  );
+
   const onEdit = useCallback((value: ItemType) => {
     setActiveItem(value);
     setVisiblePopup(true);
@@ -114,9 +146,11 @@ const GroceryList = (): React.JSX.Element => {
         onComplete={() => onComplete(item)}
         onEdit={() => onEdit(item)}
         onDelete={() => onDelete(item)}
+        onDecrease={() => onDecrease(item)}
+        onIncrease={() => onIncrease(item)}
       />
     ),
-    [onComplete, onEdit, onDelete],
+    [onComplete, onEdit, onDelete, onDecrease, onIncrease],
   );
 
   const getKey = useCallback(
@@ -148,6 +182,8 @@ const GroceryList = (): React.JSX.Element => {
             )}
             {data && data?.length > 0 ? (
               <FlatList
+                refreshing={isLoading}
+                onRefresh={refetch}
                 data={data}
                 renderItem={getRenderItem}
                 keyExtractor={getKey}

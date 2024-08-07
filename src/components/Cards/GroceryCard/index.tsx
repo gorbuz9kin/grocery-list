@@ -13,6 +13,8 @@ type Props = {
   onComplete: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onDecrease: () => void;
+  onIncrease: () => void;
 };
 
 const GroceryCard = ({
@@ -23,13 +25,14 @@ const GroceryCard = ({
   onComplete,
   onEdit,
   onDelete,
+  onDecrease,
+  onIncrease,
 }: Props) => (
   <View
-    style={
-      isCompleted
-        ? [styles.wrapper, styles.wrapperCompleted]
-        : styles.wrapper
-    }
+    style={[
+      styles.wrapper,
+      isCompleted && styles.wrapperCompleted,
+    ]}
   >
     <Pressable onPress={onComplete}>
       <View
@@ -56,6 +59,16 @@ const GroceryCard = ({
           <Text>{` ${quantity}${unit}`}</Text>
         ) : null}
       </Text>
+    </Pressable>
+    <Pressable
+      disabled={!quantity || Number(quantity) < 1}
+      onPress={onDecrease}
+      style={styles.btn}
+    >
+      <Text>-</Text>
+    </Pressable>
+    <Pressable onPress={onIncrease} style={styles.btn}>
+      <Text>+</Text>
     </Pressable>
     <Pressable onPress={onDelete}>
       <SvgIcon.Delete

@@ -5,6 +5,7 @@ import {
 import Toast from 'react-native-toast-message';
 
 import { MainConfig } from 'configs';
+import { delay } from 'utils';
 import { queryClient } from 'utils/queryClient';
 import { QueryKeys, ItemType } from 'types';
 
@@ -79,20 +80,55 @@ export const useUpdateListItem = () => {
           body: JSON.stringify(item),
         },
       );
+
+      await delay();
+
       return await response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onMutate: async (item) => {
+      await queryClient.cancelQueries({
         queryKey: [QueryKeys.SHOPPING_LIST],
       });
+
+      const prevItems: ItemType[] | undefined =
+        queryClient.getQueryData([QueryKeys.SHOPPING_LIST]);
+      const idx = prevItems?.findIndex(
+        (i: ItemType) => i.id === item.item.id,
+      );
+      const newItems: ItemType[] = prevItems
+        ? [...prevItems]
+        : [];
+
+      if (idx && newItems[idx]) {
+        newItems[idx] = {
+          ...newItems[idx],
+          ...item.item,
+        };
+      }
+
+      queryClient.setQueryData(
+        [QueryKeys.SHOPPING_LIST],
+        () => newItems,
+      );
+
+      return { prevItems };
     },
-    onError: () => {
-      console.warn('ERROR UPDATE LIST ITEM');
+    onError: (err, _, context) => {
+      console.warn('ERROR UPDATE LIST ITEM', err);
       Toast.show({
         type: 'error',
         text1: 'Error',
         text2:
           'Something happened. We are already working on it!',
+      });
+      queryClient.setQueryData(
+        [QueryKeys.SHOPPING_LIST],
+        context?.prevItems,
+      );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.SHOPPING_LIST],
       });
     },
   });
