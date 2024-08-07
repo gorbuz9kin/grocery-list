@@ -98,7 +98,6 @@ const GroceryList = (): React.JSX.Element => {
         Number(value.quantity) && Number(value.quantity) < 2
           ? 0
           : Number(value.quantity) - 1;
-      console.log(111, 'newQuantity ====> ', newQuantity);
       const newItem = {
         ...value,
         quantity: `${newQuantity}`,
